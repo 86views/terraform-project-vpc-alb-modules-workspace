@@ -6,6 +6,10 @@ resource "aws_vpc" "main" {
 
 }
 
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 resource "aws_subnet" "alb_subnet_public" {
   count                   = length(var.alb_subnet_public)
   vpc_id                  = aws_vpc.main.id
@@ -125,4 +129,5 @@ resource "aws_route" "db_rt_ass_private" {
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.nat.id
 }
+
 
