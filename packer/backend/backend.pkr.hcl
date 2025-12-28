@@ -1,0 +1,45 @@
+packer {
+  required_plugins {
+    amazon = {
+      version = ">= 1.2.8"
+      source  = "github.com/hashicorp/amazon"
+    }
+  }
+}
+
+variable "aws_region" {
+  type    = string
+  default = "ap-south-1"
+}
+
+source "amazon-ebs" "backend" {
+  region          = var.aws_region
+  ami_name        = "three-tier-backend-${formatdate("YYYYMMDDhhmmss", timestamp())}"
+  ami_description = "Custom backend AMI with Node.js 22 + PM2 (Amazon Linux 2023)"
+  
+  instance_type = "t3.micro"
+  ssh_username  = "ec2-user"
+  
+  source_ami_filter {
+    filters = {
+      name                = "al2023-ami-2023.*-x86_64"
+      root-device-type    = "ebs"
+      virtualization-type = "hvm"
+    }
+    most_recent = true
+    owners      = ["amazon"]
+  }
+
+  tags = {
+    Project = "three-tier"
+    Tier    = "backend"
+  }
+}
+
+build {
+  sources = ["source.amazon-ebs.backend"]
+
+  provisioner "shell" {
+    script = "setup.sh"
+  }
+}
