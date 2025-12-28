@@ -1,9 +1,9 @@
 resource "aws_alb" "alb_web" {
-  name               = "alb_web"
+  name               = "alb-web"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.alb_sg.id]
-  subnets            = [for subnet in aws_subnet.alb_subnet_public : subnet.id]
+  security_groups    = [var.alb_sg_id]
+  subnets            = var.public_subnets
 
   enable_deletion_protection = false
   idle_timeout               = 60
@@ -14,10 +14,10 @@ resource "aws_alb" "alb_web" {
 }
 
 resource "aws_lb_target_group" "alb_target_group_web" {
-  name     = "alb_target_group_web"
+  name     = "alb-target-group-web"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
+  vpc_id   = var.vpc_id
 
   health_check {
     path                = "/"

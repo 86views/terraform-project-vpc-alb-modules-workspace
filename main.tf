@@ -56,3 +56,31 @@ module "secrets" {
   db_password = "password"
   db_endpoint = module.rds.db_instance_endpoint
 }
+
+module "asg" {
+  source = "./modules/asg"
+
+  vpc_id              = module.vpc.vpc_id
+  public_subnets      = module.vpc.alb_subnet_public
+  web_private_subnets = module.vpc.web_subnet_private
+  app_private_subnets = module.vpc.app_subnet_private
+
+  frontend_alb_sg_id = module.sg.frontend_alb_sg_id
+  backend_alb_sg_id  = module.sg.app_alb_internal_sg_id
+
+  # Using hardcoded values as they are not defined in root variables
+  image_id          = "ami-00bb6a80f01f03502" # Ubuntu 22.04 in ap-south-1 (example)
+  web_instance_type = "t2.micro"
+  app_instance_type = "t2.micro"
+  user_data_base64  = base64encode(file("user_data.sh"))
+
+  sns_topic_arn = "arn:aws:sns:ap-south-1:970378220457:stale-ebs"
+}
+
+module "route53" {
+  source           = "./modules/route53"
+  hosted_zone_name = "harishshetty.xyz"
+  record_name      = "dev"
+  alb_dns_name     = module.asg.web_alb_dns_name
+  alb_zone_id      = module.asg.web_alb_zone_id
+}

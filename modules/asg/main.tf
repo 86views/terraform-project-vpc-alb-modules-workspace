@@ -1,11 +1,11 @@
 # web application load balancer
 resource "aws_lb" "web_alb" {
-  name               = "web_alb"
+  name               = "web-alb"
   internal           = false
   load_balancer_type = "application"
 
-  security_groups = [aws_security_group.frontend_alb_sg.id]
-  subnets         = [for subnet in aws_subnet.alb_subnet_public : subnet.id]
+  security_groups = [var.frontend_alb_sg_id]
+  subnets         = var.public_subnets
 
   enable_deletion_protection = false
   idle_timeout               = 60
@@ -22,7 +22,7 @@ resource "aws_lb_target_group" "web" {
   name     = "web"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
+  vpc_id   = var.vpc_id
 
   health_check {
     enabled             = true
@@ -53,7 +53,7 @@ resource "aws_launch_template" "web" {
   image_id      = var.image_id
   instance_type = var.web_instance_type
 
-  user_data = base64encode(file("user_data.sh"))
+  user_data = var.user_data_base64
 
 
 
@@ -74,7 +74,7 @@ resource "aws_launch_template" "web" {
 resource "aws_autoscaling_group" "web" {
   name_prefix = "${terraform.workspace}_web"
 
-  vpc_zone_identifier = [for subnet in aws_subnet.web_subnet_private : subnet.id]
+  vpc_zone_identifier = var.web_private_subnets
 
   desired_capacity = 2
 
@@ -115,12 +115,12 @@ resource "aws_autoscaling_group" "web" {
 # App ALB (Internal)
 
 resource "aws_lb" "app_alb" {
-  name               = "app_alb"
+  name               = "app-alb"
   internal           = true
   load_balancer_type = "application"
 
-  security_groups = [aws_security_group.backend_alb_sg.id]
-  subnets         = [for subnet in aws_subnet.alb_subnet_public : subnet.id]
+  security_groups = [var.backend_alb_sg_id]
+  subnets         = var.public_subnets
 
   enable_deletion_protection = false
   idle_timeout               = 60
@@ -138,7 +138,7 @@ resource "aws_lb_target_group" "app" {
   name     = "app"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
+  vpc_id   = var.vpc_id
 
   health_check {
     enabled             = true
@@ -182,7 +182,7 @@ resource "aws_launch_template" "app" {
   image_id      = var.image_id
   instance_type = var.app_instance_type
 
-  user_data = base64encode(file("user_data.sh"))
+  user_data = var.user_data_base64
 
 
 
@@ -196,14 +196,14 @@ resource "aws_launch_template" "app" {
     }
   }
 
-  depends_on = [aws_db_instance]
+
 
 }
 
 resource "aws_autoscaling_group" "app" {
   name_prefix = "${terraform.workspace}_app"
 
-  vpc_zone_identifier = [for subnet in aws_subnet.app_subnet_private : subnet.id]
+  vpc_zone_identifier = var.app_private_subnets
 
   desired_capacity = 2
 
@@ -238,5 +238,5 @@ resource "aws_autoscaling_group" "app" {
     propagate_at_launch = true
   }
 
-  depends_on = [aws_db_instance]
+
 }
