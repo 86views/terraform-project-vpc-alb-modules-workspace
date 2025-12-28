@@ -11,6 +11,10 @@ module "vpc" {
   }
 }
 
+module "sg" {
+  source = "./modules/sg"
+  vpc_id = module.vpc.vpc_id
+}
 
 module "rds" {
   source = "./modules/rds"
@@ -28,8 +32,8 @@ module "rds" {
   username = "admin"
   password = "password"
 
-  vpc_security_group_ids = [aws_security_group.backend_alb_sg.id]
-  db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name
+  vpc_security_group_ids = [module.sg.db_sg_id]
+  subnet_ids             = module.vpc.db_subnet_private
 
   multi_az            = false
   publicly_accessible = false
@@ -42,8 +46,5 @@ module "rds" {
   deletion_protection          = false
   apply_immediately            = true
   performance_insights_enabled = true
-
-
 }
-
 

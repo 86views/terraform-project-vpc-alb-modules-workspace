@@ -1,3 +1,7 @@
+variable "vpc_id" {
+  type = string
+}
+
 # variable "alb_sg" {
 #   type = list(object({
 #     from_port   = number

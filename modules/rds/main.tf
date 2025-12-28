@@ -2,7 +2,7 @@
 
 resource "aws_db_subnet_group" "db_subnet_group" {
   name       = "db_subnet_group"
-  subnet_ids = [for subnet in aws_subnet.db_subnet_private : subnet.id]
+  subnet_ids = var.subnet_ids
   tags = {
     Name        = "db_subnet_group_${terraform.workspace}"
     Environment = "${terraform.workspace}"
@@ -14,7 +14,7 @@ resource "aws_db_subnet_group" "db_subnet_group" {
 # RDS SQL DB instance
 
 resource "aws_db_instance" "db_instance" {
-  identifier     = "db_instance"
+  identifier     = "db-instance"
   instance_class = "db.t2.micro"
   engine         = "mysql"
   engine_version = "8.0"
@@ -28,7 +28,7 @@ resource "aws_db_instance" "db_instance" {
   username = "admin"
   password = "password"
 
-  vpc_security_group_ids = [aws_security_group.backend_alb_sg.id]
+  vpc_security_group_ids = var.vpc_security_group_ids
   db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name
 
   multi_az            = false
