@@ -58,17 +58,15 @@ resource "aws_launch_template" "web" {
 
 
 
-  tag_specifications = [
-    {
-      resource_type = "instance"
-      tags = {
-        Name        = "web_${terraform.workspace}"
-        Environment = "${terraform.workspace}"
-        Project     = "vpc-alb"
-        Tier        = "frontend"
-      }
+  tag_specifications {
+    resource_type = "instance"
+    tags = {
+      Name        = "web_${terraform.workspace}"
+      Environment = "${terraform.workspace}"
+      Project     = "vpc-alb"
+      Tier        = "frontend"
     }
-  ]
+  }
 
 }
 
@@ -83,15 +81,32 @@ resource "aws_autoscaling_group" "web" {
   min_size = 2
   max_size = 4
 
-  launch_template = aws_launch_template.web.id
+  launch_template {
+    id      = aws_launch_template.web.id
+    version = "$Latest"
+  }
 
   target_group_arns = [aws_lb_target_group.web.id]
 
-  tags = {
-    Name        = "web_${terraform.workspace}"
-    Environment = "${terraform.workspace}"
-    Project     = "vpc-alb"
-    Tier        = "frontend"
+  tag {
+    key                 = "Name"
+    value               = "web_${terraform.workspace}"
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "Environment"
+    value               = terraform.workspace
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "Project"
+    value               = "vpc-alb"
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "Tier"
+    value               = "frontend"
+    propagate_at_launch = true
   }
 
 }
@@ -153,8 +168,8 @@ resource "aws_lb_listener" "app" {
   protocol          = "HTTP"
 
   default_action {
-    type              = "forward"
-    target_group_arns = aws_lb_target_group.app.id
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.app.id
   }
 
 }
@@ -171,17 +186,15 @@ resource "aws_launch_template" "app" {
 
 
 
-  tag_specifications = [
-    {
-      resource_type = "instance"
-      tags = {
-        Name        = "app_${terraform.workspace}"
-        Environment = "${terraform.workspace}"
-        Project     = "vpc-alb"
-        Tier        = "backend"
-      }
+  tag_specifications {
+    resource_type = "instance"
+    tags = {
+      Name        = "app_${terraform.workspace}"
+      Environment = "${terraform.workspace}"
+      Project     = "vpc-alb"
+      Tier        = "backend"
     }
-  ]
+  }
 
   depends_on = [aws_db_instance]
 
@@ -197,15 +210,32 @@ resource "aws_autoscaling_group" "app" {
   min_size = 2
   max_size = 4
 
-  launch_template = aws_launch_template.app.id
+  launch_template {
+    id      = aws_launch_template.app.id
+    version = "$Latest"
+  }
 
   target_group_arns = [aws_lb_target_group.app.id]
 
-  tags = {
-    Name        = "app_${terraform.workspace}"
-    Environment = "${terraform.workspace}"
-    Project     = "vpc-alb"
-    Tier        = "backend"
+  tag {
+    key                 = "Name"
+    value               = "app_${terraform.workspace}"
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "Environment"
+    value               = terraform.workspace
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "Project"
+    value               = "vpc-alb"
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "Tier"
+    value               = "backend"
+    propagate_at_launch = true
   }
 
   depends_on = [aws_db_instance]
