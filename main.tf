@@ -46,5 +46,13 @@ module "rds" {
   deletion_protection          = false
   apply_immediately            = true
   performance_insights_enabled = true
+
 }
 
+module "secrets" {
+  source      = "./modules/secrets"
+  secret_name = "backend-db-credentials-${terraform.workspace}"
+  db_username = "admin"
+  db_password = "password"
+  db_endpoint = module.rds.db_instance_endpoint
+}
