@@ -15,11 +15,11 @@ data "aws_ami" "frontend" {
 
 module "vpc" {
   source             = "./modules/vpc"
-  cidr_block         = "10.75.0.0/16"
-  alb_subnet_public  = ["10.75.1.0/24", "10.75.2.0/24", "10.75.3.0/24"]
-  web_subnet_private = ["10.75.4.0/24", "10.75.5.0/24", "10.75.6.0/24"]
-  app_subnet_private = ["10.75.7.0/24", "10.75.8.0/24", "10.75.9.0/24"]
-  db_subnet_private  = ["10.75.10.0/24", "10.75.11.0/24", "10.75.12.0/24"]
+  cidr_block         = var.vpc_cidr_block
+  alb_subnet_public  = var.alb_subnet_public
+  web_subnet_private = var.web_subnet_private
+  app_subnet_private = var.app_subnet_private
+  db_subnet_private  = var.db_subnet_private
 
   tags = {
     Name = "vpc-alb"
@@ -86,8 +86,8 @@ module "asg" {
 
   # Using dynamic AMI from data source
   image_id             = data.aws_ami.frontend.id
-  web_instance_type    = "t2.micro"
-  app_instance_type    = "t2.micro"
+  web_instance_type    = var.web_instance_type
+  app_instance_type    = var.app_instance_type
   web_user_data_base64 = base64encode(file("web_user_data.sh"))
   app_user_data_base64 = base64encode(templatefile("app_user_data.sh", {
     region       = var.region
