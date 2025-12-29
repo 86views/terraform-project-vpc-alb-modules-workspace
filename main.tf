@@ -67,9 +67,10 @@ module "rds" {
 module "secrets" {
   source      = "./modules/secrets"
   secret_name = "backend-db-credentials-${terraform.workspace}"
-  db_username = var.db_username
-  db_password = var.db_password
+  db_username = "admin"
+  db_password = "password"
   db_endpoint = module.rds.db_instance_endpoint
+  db_name     = "webappdb"
 }
 
 module "asg" {
@@ -84,11 +85,18 @@ module "asg" {
   backend_alb_sg_id  = module.sg.app_alb_internal_sg_id
 
   # Using dynamic AMI from data source
-  image_id          = data.aws_ami.frontend.id
-  web_instance_type = "t2.micro"
-  app_instance_type = "t2.micro"
-  user_data_base64  = base64encode(file("user_data.sh"))
+  image_id             = data.aws_ami.frontend.id
+  web_instance_type    = "t2.micro"
+  app_instance_type    = "t2.micro"
+  web_user_data_base64 = base64encode(file("web_user_data.sh"))
+  app_user_data_base64 = base64encode(templatefile("app_user_data.sh", {
+    region       = var.region
+    secret_name  = module.secrets.secret_name
+    environment  = terraform.workspace
+    project_name = "vpc-alb"
+  }))
 
+  secret_arn    = module.secrets.secret_arn
   sns_topic_arn = "arn:aws:sns:ap-south-1:970378220457:stale-ebs"
 }
 

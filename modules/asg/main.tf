@@ -53,7 +53,7 @@ resource "aws_launch_template" "web" {
   image_id      = var.image_id
   instance_type = var.web_instance_type
 
-  user_data = var.user_data_base64
+  user_data = var.web_user_data_base64
 
 
 
@@ -176,13 +176,63 @@ resource "aws_lb_listener" "app" {
 
 # app launch template and asg
 
+# App IAM Role
+resource "aws_iam_role" "app_role" {
+  name = "app_role_${terraform.workspace}"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "secrets_policy" {
+  name        = "secrets_policy_${terraform.workspace}"
+  description = "Allow access to secrets manager"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "secretsmanager:GetSecretValue"
+        ]
+        Effect   = "Allow"
+        Resource = var.secret_arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "secrets_attach" {
+  role       = aws_iam_role.app_role.name
+  policy_arn = aws_iam_policy.secrets_policy.arn
+}
+
+resource "aws_iam_instance_profile" "app_profile" {
+  name = "app_profile_${terraform.workspace}"
+  role = aws_iam_role.app_role.name
+}
+
 resource "aws_launch_template" "app" {
   name_prefix = "${terraform.workspace}_app"
 
   image_id      = var.image_id
   instance_type = var.app_instance_type
 
-  user_data = var.user_data_base64
+  user_data = var.app_user_data_base64
+
+  iam_instance_profile {
+    name = aws_iam_instance_profile.app_profile.name
+  }
 
 
 

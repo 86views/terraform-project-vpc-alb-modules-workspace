@@ -18,3 +18,8 @@ variable "db_endpoint" {
   description = "Database endpoint"
   type        = string
 }
+
+variable "db_name" {
+  description = "Database name"
+  type        = string
+}

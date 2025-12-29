@@ -34,10 +34,18 @@ variable "image_id" {
   type = string
 }
 
-variable "user_data_base64" {
+variable "web_user_data_base64" {
+  type = string
+}
+
+variable "app_user_data_base64" {
   type = string
 }
 
 variable "sns_topic_arn" {
+  type = string
+}
+
+variable "secret_arn" {
   type = string
 }

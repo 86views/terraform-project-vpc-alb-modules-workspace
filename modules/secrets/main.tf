@@ -8,5 +8,6 @@ resource "aws_secretsmanager_secret_version" "db_secret_version" {
     username = var.db_username
     password = var.db_password
     endpoint = var.db_endpoint
+    db_name  = var.db_name
   })
 }
