@@ -32,7 +32,27 @@ apply_immediately            = true
 performance_insights_enabled = true
 
 
+desired_capacity_web = 1
+min_size_web         = 1
+max_size_web         = 2
+
+desired_capacity_app = 1
+min_size_app         = 1
+max_size_app         = 2
+
 
 
 hosted_zone_name = "harishshetty.xyz"
 record_name      = "dev"
+
+
+
+bastion_image_id      = "ami-0c44f651ab5e9285f"
+bastion_instance_type = "t2.micro"
+bastion_tags          = { Name = "bastion-dev" }
+bastion_key_name      = "new-keypair"
+
+tags = {
+  Project     = "vpc-alb"
+  Environment = "dev"
+}

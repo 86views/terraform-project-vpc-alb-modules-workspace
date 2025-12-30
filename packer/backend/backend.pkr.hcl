@@ -14,7 +14,7 @@ variable "aws_region" {
 
 source "amazon-ebs" "backend" {
   region          = var.aws_region
-  ami_name        = "three-tier-backend-${formatdate("YYYYMMDDhhmmss", timestamp())}"
+  ami_name        = "three-tier-backend"
   ami_description = "Custom backend AMI with Node.js 22 + PM2 (Amazon Linux 2023)"
   
   instance_type = "t3.micro"
@@ -41,5 +41,10 @@ build {
 
   provisioner "shell" {
     script = "setup.sh"
+  }
+
+  post-processor "manifest" {
+    output     = "../ami_ids/backend_manifest.json"
+    strip_path = true
   }
 }

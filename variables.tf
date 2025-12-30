@@ -147,3 +147,58 @@ variable "record_name" {
   description = "The name of the record"
   type        = string
 }
+
+variable "desired_capacity_web" {
+  description = "The desired capacity of the Auto Scaling Group"
+  type        = number
+}
+
+variable "min_size_web" {
+  description = "The minimum size of the Auto Scaling Group"
+  type        = number
+}
+
+variable "max_size_web" {
+  description = "The maximum size of the Auto Scaling Group"
+  type        = number
+}
+
+variable "desired_capacity_app" {
+  description = "The desired capacity of the Auto Scaling Group"
+  type        = number
+}
+
+variable "min_size_app" {
+  description = "The minimum size of the Auto Scaling Group"
+  type        = number
+}
+
+variable "max_size_app" {
+  description = "The maximum size of the Auto Scaling Group"
+  type        = number
+}
+
+variable "bastion_image_id" {
+  description = "AMI ID for the Bastion Host"
+  type        = string
+}
+
+variable "bastion_instance_type" {
+  description = "Instance type for the Bastion Host"
+  type        = string
+}
+
+variable "bastion_tags" {
+  description = "Tags to be applied to the Bastion Host"
+  type        = map(string)
+}
+
+variable "bastion_key_name" {
+  description = "Key pair name for the Bastion Host"
+  type        = string
+}
+
+variable "tags" {
+  description = "Common tags for resources"
+  type        = map(string)
+}

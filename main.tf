@@ -5,15 +5,14 @@ module "vpc" {
   web_subnet_private = var.web_subnet_private
   app_subnet_private = var.app_subnet_private
   db_subnet_private  = var.db_subnet_private
-
-  tags = {
-    Name = "vpc-alb"
-  }
+  tags               = var.tags
 }
 
 module "sg" {
   source = "./modules/sg"
   vpc_id = module.vpc.vpc_id
+
+  depends_on = [module.vpc]
 }
 
 module "rds" {
@@ -47,6 +46,7 @@ module "rds" {
   apply_immediately            = var.apply_immediately
   performance_insights_enabled = var.performance_insights_enabled
 
+  depends_on = [module.vpc]
 }
 
 module "secrets" {
@@ -58,6 +58,8 @@ module "secrets" {
   db_name     = var.db_name
 }
 
+
+
 module "asg" {
   source = "./modules/asg"
 
@@ -68,6 +70,14 @@ module "asg" {
 
   frontend_alb_sg_id = module.sg.frontend_alb_sg_id
   backend_alb_sg_id  = module.sg.app_alb_internal_sg_id
+
+  desired_capacity_web = var.desired_capacity_web
+  min_size_web         = var.min_size_web
+  max_size_web         = var.max_size_web
+
+  desired_capacity_app = var.desired_capacity_app
+  min_size_app         = var.min_size_app
+  max_size_app         = var.max_size_app
 
   # Using dynamic AMI from data source
   image_id             = data.aws_ami.frontend.id
@@ -91,4 +101,20 @@ module "route53" {
   record_name      = var.record_name
   alb_dns_name     = module.asg.web_alb_dns_name
   alb_zone_id      = module.asg.web_alb_zone_id
+
+  depends_on = [module.asg]
+}
+
+
+module "bastion" {
+  source = "./modules/bastion-server"
+
+  image_id        = var.bastion_image_id
+  instance_type   = var.bastion_instance_type
+  subnet_id       = module.vpc.alb_subnet_public[0]
+  security_groups = [module.sg.bastion_sg_id]
+  tags            = var.tags
+  key_name        = var.bastion_key_name
+
+  depends_on = [module.vpc]
 }

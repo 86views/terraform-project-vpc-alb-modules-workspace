@@ -49,3 +49,27 @@ variable "sns_topic_arn" {
 variable "secret_arn" {
   type = string
 }
+
+variable "desired_capacity_web" {
+  type = number
+}
+
+variable "min_size_web" {
+  type = number
+}
+
+variable "max_size_web" {
+  type = number
+}
+
+variable "desired_capacity_app" {
+  type = number
+}
+
+variable "min_size_app" {
+  type = number
+}
+
+variable "max_size_app" {
+  type = number
+}

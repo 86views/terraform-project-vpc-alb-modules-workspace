@@ -14,7 +14,7 @@ variable "aws_region" {
 
 source "amazon-ebs" "frontend" {
   region          = var.aws_region
-  ami_name        = "three-tier-frontend-${formatdate("YYYYMMDDhhmmss", timestamp())}"
+  ami_name        = "three-tier-frontend"
   ami_description = "Custom frontend AMI with nginx + git + Node.js 22 (Amazon Linux 2023)"
   
   instance_type = "t3.micro"
@@ -43,5 +43,10 @@ build {
 
   provisioner "shell" {
     script = "setup.sh"
+  }
+
+  post-processor "manifest" {
+    output     = "../ami_ids/frontend_manifest.json"
+    strip_path = true
   }
 }

@@ -76,10 +76,9 @@ resource "aws_autoscaling_group" "web" {
 
   vpc_zone_identifier = var.web_private_subnets
 
-  desired_capacity = 2
-
-  min_size = 2
-  max_size = 4
+  desired_capacity = var.desired_capacity_web
+  min_size         = var.min_size_web
+  max_size         = var.max_size_web
 
   launch_template {
     id      = aws_launch_template.web.id
@@ -91,21 +90,6 @@ resource "aws_autoscaling_group" "web" {
   tag {
     key                 = "Name"
     value               = "web_${terraform.workspace}"
-    propagate_at_launch = true
-  }
-  tag {
-    key                 = "Environment"
-    value               = terraform.workspace
-    propagate_at_launch = true
-  }
-  tag {
-    key                 = "Project"
-    value               = "vpc-alb"
-    propagate_at_launch = true
-  }
-  tag {
-    key                 = "Tier"
-    value               = "frontend"
     propagate_at_launch = true
   }
 
@@ -255,10 +239,10 @@ resource "aws_autoscaling_group" "app" {
 
   vpc_zone_identifier = var.app_private_subnets
 
-  desired_capacity = 2
+  desired_capacity = var.desired_capacity_app
 
-  min_size = 2
-  max_size = 4
+  min_size = var.min_size_app
+  max_size = var.max_size_app
 
   launch_template {
     id      = aws_launch_template.app.id
@@ -272,21 +256,5 @@ resource "aws_autoscaling_group" "app" {
     value               = "app_${terraform.workspace}"
     propagate_at_launch = true
   }
-  tag {
-    key                 = "Environment"
-    value               = terraform.workspace
-    propagate_at_launch = true
-  }
-  tag {
-    key                 = "Project"
-    value               = "vpc-alb"
-    propagate_at_launch = true
-  }
-  tag {
-    key                 = "Tier"
-    value               = "backend"
-    propagate_at_launch = true
-  }
-
 
 }
