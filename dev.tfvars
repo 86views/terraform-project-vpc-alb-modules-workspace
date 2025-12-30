@@ -31,6 +31,9 @@ deletion_protection          = false
 apply_immediately            = true
 performance_insights_enabled = false
 
+secret_username = "admin"
+secret_password = "password"
+secret_db_name  = "webappdb"
 
 desired_capacity_web = 1
 min_size_web         = 1

@@ -53,7 +53,7 @@ resource "aws_launch_template" "web" {
   image_id      = var.web_image_id
   instance_type = var.web_instance_type
 
-  user_data = var.web_user_data_base64
+  user_data = base64encode(replace(base64decode(var.web_user_data_base64), "__APP_ALB_DNS__", aws_lb.app_alb.dns_name))
 
 
 

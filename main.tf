@@ -52,10 +52,10 @@ module "rds" {
 module "secrets" {
   source      = "./modules/secrets"
   secret_name = "backend-db-credentials-${terraform.workspace}"
-  db_username = var.db_username
-  db_password = var.db_password
+  db_username = var.secret_username
+  db_password = var.secret_password
   db_endpoint = module.rds.db_instance_endpoint
-  db_name     = var.db_name
+  db_name     = var.secret_db_name
 
   depends_on = [module.rds]
 }
@@ -107,7 +107,6 @@ module "route53" {
   alb_dns_name     = module.asg.web_alb_dns_name
   alb_zone_id      = module.asg.web_alb_zone_id
 
-  depends_on = [module.asg]
 }
 
 

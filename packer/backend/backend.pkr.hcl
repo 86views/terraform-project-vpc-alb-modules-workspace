@@ -31,8 +31,14 @@ source "amazon-ebs" "backend" {
   }
 
   tags = {
+    Name    = "three-tier-backend"
     Project = "three-tier"
     Tier    = "backend"
+  }
+
+  run_tags = {
+    Name    = "packer-builder-backend"
+    Project = "three-tier"
   }
 }
 

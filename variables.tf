@@ -207,3 +207,19 @@ variable "sns_topic_arn" {
   description = "ARN of the SNS topic for notifications"
   type        = string
 }
+
+variable "secret_username" {
+  description = "Username for the secret"
+  type        = string
+}
+
+variable "secret_password" {
+  description = "Password for the secret"
+  type        = string
+  sensitive   = true
+}
+
+variable "secret_db_name" {
+  description = "Database name for the secret"
+  type        = string
+}
