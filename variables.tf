@@ -137,3 +137,13 @@ variable "app_instance_type" {
   description = "Instance type for App tier"
   type        = string
 }
+
+variable "hosted_zone_name" {
+  description = "The name of the hosted zone"
+  type        = string
+}
+
+variable "record_name" {
+  description = "The name of the record"
+  type        = string
+}

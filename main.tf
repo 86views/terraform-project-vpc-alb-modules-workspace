@@ -1,18 +1,3 @@
-data "aws_ami" "frontend" {
-  most_recent = true
-  owners      = ["self"]
-
-  filter {
-    name   = "name"
-    values = ["three-tier-frontend-*"]
-  }
-
-  filter {
-    name   = "state"
-    values = ["available"]
-  }
-}
-
 module "vpc" {
   source             = "./modules/vpc"
   cidr_block         = var.vpc_cidr_block
@@ -67,10 +52,10 @@ module "rds" {
 module "secrets" {
   source      = "./modules/secrets"
   secret_name = "backend-db-credentials-${terraform.workspace}"
-  db_username = "admin"
-  db_password = "password"
+  db_username = var.db_username
+  db_password = var.db_password
   db_endpoint = module.rds.db_instance_endpoint
-  db_name     = "webappdb"
+  db_name     = var.db_name
 }
 
 module "asg" {
@@ -102,8 +87,8 @@ module "asg" {
 
 module "route53" {
   source           = "./modules/route53"
-  hosted_zone_name = "harishshetty.xyz"
-  record_name      = "dev"
+  hosted_zone_name = var.hosted_zone_name
+  record_name      = var.record_name
   alb_dns_name     = module.asg.web_alb_dns_name
   alb_zone_id      = module.asg.web_alb_zone_id
 }
