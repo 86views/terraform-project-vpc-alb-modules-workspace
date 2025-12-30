@@ -56,6 +56,8 @@ module "secrets" {
   db_password = var.db_password
   db_endpoint = module.rds.db_instance_endpoint
   db_name     = var.db_name
+
+  depends_on = [module.rds]
 }
 
 
@@ -80,7 +82,8 @@ module "asg" {
   max_size_app         = var.max_size_app
 
   # Using dynamic AMI from data source
-  image_id             = data.aws_ami.frontend.id
+  web_image_id         = data.aws_ami.frontend.id
+  app_image_id         = data.aws_ami.backend.id
   web_instance_type    = var.web_instance_type
   app_instance_type    = var.app_instance_type
   web_user_data_base64 = base64encode(file("web_user_data.sh"))
@@ -92,7 +95,9 @@ module "asg" {
   }))
 
   secret_arn    = module.secrets.secret_arn
-  sns_topic_arn = "arn:aws:sns:ap-south-1:970378220457:stale-ebs"
+  sns_topic_arn = var.sns_topic_arn
+
+  depends_on = [module.secrets]
 }
 
 module "route53" {
@@ -113,8 +118,14 @@ module "bastion" {
   instance_type   = var.bastion_instance_type
   subnet_id       = module.vpc.alb_subnet_public[0]
   security_groups = [module.sg.bastion_sg_id]
-  tags            = var.tags
   key_name        = var.bastion_key_name
 
-  depends_on = [module.vpc]
+  depends_on = [module.sg]
+
+  tags = {
+    Name        = "bastion-${terraform.workspace}"
+    Environment = "${terraform.workspace}"
+    Project     = "vpc-alb"
+    Tier        = "bastion"
+  }
 }

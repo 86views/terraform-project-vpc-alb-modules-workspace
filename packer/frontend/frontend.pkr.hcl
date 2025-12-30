@@ -33,8 +33,14 @@ source "amazon-ebs" "frontend" {
   }
 
   tags = {
+    Name    = "three-tier-frontend"
     Project = "three-tier"
     Tier    = "frontend"
+  }
+
+  run_tags = {
+    Name    = "packer-builder-frontend"
+    Project = "three-tier"
   }
 }
 

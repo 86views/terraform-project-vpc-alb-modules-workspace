@@ -14,7 +14,7 @@ resource "aws_db_subnet_group" "db_subnet_group" {
 # RDS SQL DB instance
 
 resource "aws_db_instance" "db_instance" {
-  identifier     = "db-instance"
+  identifier     = "db-instance-${terraform.workspace}"
   instance_class = var.instance_class
   engine         = var.engine
   engine_version = var.engine_version

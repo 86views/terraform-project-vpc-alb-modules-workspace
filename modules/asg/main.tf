@@ -50,7 +50,7 @@ resource "aws_lb_target_group" "web" {
 resource "aws_launch_template" "web" {
   name_prefix = "${terraform.workspace}_web"
 
-  image_id      = var.image_id
+  image_id      = var.web_image_id
   instance_type = var.web_instance_type
 
   user_data = var.web_user_data_base64
@@ -209,7 +209,7 @@ resource "aws_iam_instance_profile" "app_profile" {
 resource "aws_launch_template" "app" {
   name_prefix = "${terraform.workspace}_app"
 
-  image_id      = var.image_id
+  image_id      = var.app_image_id
   instance_type = var.app_instance_type
 
   user_data = var.app_user_data_base64
@@ -240,9 +240,8 @@ resource "aws_autoscaling_group" "app" {
   vpc_zone_identifier = var.app_private_subnets
 
   desired_capacity = var.desired_capacity_app
-
-  min_size = var.min_size_app
-  max_size = var.max_size_app
+  min_size         = var.min_size_app
+  max_size         = var.max_size_app
 
   launch_template {
     id      = aws_launch_template.app.id

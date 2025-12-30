@@ -4,11 +4,26 @@ data "aws_availability_zones" "available" {
 
 data "aws_ami" "frontend" {
   most_recent = true
-  owners      = ["amazon"]
+  owners      = ["self"]
 
   filter {
     name   = "name"
-    values = ["al2023-ami-2023.*-x86_64"]
+    values = ["three-tier-frontend"]
+  }
+
+  filter {
+    name   = "state"
+    values = ["available"]
+  }
+}
+
+data "aws_ami" "backend" {
+  most_recent = true
+  owners      = ["self"]
+
+  filter {
+    name   = "name"
+    values = ["three-tier-backend"]
   }
 
   filter {

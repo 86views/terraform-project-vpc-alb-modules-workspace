@@ -5,12 +5,12 @@ web_subnet_private = ["10.75.4.0/24", "10.75.5.0/24", "10.75.6.0/24"]
 app_subnet_private = ["10.75.7.0/24", "10.75.8.0/24", "10.75.9.0/24"]
 db_subnet_private  = ["10.75.10.0/24", "10.75.11.0/24", "10.75.12.0/24"]
 
-web_instance_type = "t2.micro"
-app_instance_type = "t2.micro"
+web_instance_type = "t3.micro"
+app_instance_type = "t3.micro"
 
-db_instance_class       = "db.t2.micro"
+db_instance_class       = "db.t3.micro"
 db_engine               = "mysql"
-db_engine_version       = "8.0.32"
+db_engine_version       = "8.0.43"
 db_parameter_group_name = "default.mysql8.0"
 storage_encrypted       = true
 db_allocated_storage    = 20
@@ -23,13 +23,13 @@ multi_az            = true
 publicly_accessible = false
 
 backup_retention_period = 5
-backup_window           = "07:00-09:00"
+backup_window           = "17:00-21:00"
 maintenance_window      = "sun:07:00-sun:09:00"
 
 skip_final_snapshot          = true
-deletion_protection          = true
+deletion_protection          = false
 apply_immediately            = true
-performance_insights_enabled = true
+performance_insights_enabled = false
 
 
 desired_capacity_web = 1
@@ -40,6 +40,7 @@ desired_capacity_app = 1
 min_size_app         = 1
 max_size_app         = 2
 
+sns_topic_arn = "arn:aws:sns:ap-south-1:970378220457:stale-ebs"
 
 
 hosted_zone_name = "harishshetty.xyz"

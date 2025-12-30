@@ -30,7 +30,11 @@ variable "app_instance_type" {
   type = string
 }
 
-variable "image_id" {
+variable "web_image_id" {
+  type = string
+}
+
+variable "app_image_id" {
   type = string
 }
 
