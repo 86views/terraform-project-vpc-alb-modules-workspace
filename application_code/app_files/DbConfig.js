@@ -20,8 +20,11 @@ async function getDbSecret() {
 
     const secret = JSON.parse(response.SecretString);
 
+    const [host, port] = secret.endpoint.split(':');
+
     return {
-        DB_HOST: secret.endpoint,
+        DB_HOST: host,
+        DB_PORT: port || 3306,
         DB_USER: secret.username,
         DB_PWD: secret.password,
         DB_DATABASE: secret.db_name || 'webappdb'

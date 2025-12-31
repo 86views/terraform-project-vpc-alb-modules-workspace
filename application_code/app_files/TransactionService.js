@@ -7,6 +7,7 @@ async function init() {
     const secrets = await dbConfig.getDbSecret();
     con = mysql.createConnection({
         host: secrets.DB_HOST,
+        port: secrets.DB_PORT,
         user: secrets.DB_USER,
         password: secrets.DB_PWD,
         database: secrets.DB_DATABASE
