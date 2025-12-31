@@ -10,7 +10,12 @@ sudo chmod -R 755 /home/ec2-user/app_files
 su - ec2-user <<'EOF'
 # Load nvm environment
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+# Explicitly load app environment variables
+if [ -f /etc/profile.d/app_env.sh ]; then
+    source /etc/profile.d/app_env.sh
+fi
 
 cd /home/ec2-user/app_files
 

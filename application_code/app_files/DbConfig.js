@@ -4,6 +4,7 @@ const secret_name = process.env.SECRET_NAME;
 const region = process.env.REGION;
 
 async function getDbSecret() {
+    console.log(`[DbConfig] Fetching secret: ${secret_name} in region: ${region}`);
     const client = new SecretsManagerClient({ region: region });
     let response;
 
