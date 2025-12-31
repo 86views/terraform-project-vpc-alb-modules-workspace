@@ -29,8 +29,9 @@ export NVM_DIR="$HOME/.nvm"
 
 # Sync latest code
 # rsync -av --delete ~/terraform-project-vpc-alb-modules-workspace/application_code/web_files/ ~/web_files/
-
+sleep 10
 cd ~/web_files
 npm install
+sleep 10
 npm run build
 EOF
