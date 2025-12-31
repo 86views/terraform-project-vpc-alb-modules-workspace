@@ -12,7 +12,6 @@ async function getDbSecret() {
         response = await client.send(
             new GetSecretValueCommand({
                 SecretId: secret_name,
-                VersionStage: "AWSCurrent",
             })
         );
     } catch (error) {

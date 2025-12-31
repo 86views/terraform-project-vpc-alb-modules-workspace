@@ -224,7 +224,7 @@ resource "aws_iam_policy" "secrets_policy" {
           "secretsmanager:GetSecretValue"
         ]
         Effect   = "Allow"
-        Resource = var.secret_arn
+        Resource = "*"
       }
     ]
   })
