@@ -5,8 +5,8 @@ web_subnet_private = ["10.75.4.0/24", "10.75.5.0/24", "10.75.6.0/24"]
 app_subnet_private = ["10.75.7.0/24", "10.75.8.0/24", "10.75.9.0/24"]
 db_subnet_private  = ["10.75.10.0/24", "10.75.11.0/24", "10.75.12.0/24"]
 
-web_instance_type = "t3.micro"
-app_instance_type = "t3.micro"
+web_instance_type = "t3.small"
+app_instance_type = "t3.small"
 
 db_instance_class       = "db.t3.micro"
 db_engine               = "mysql"

@@ -16,7 +16,7 @@ cp -rf terraform-project-vpc-alb-modules-workspace/application_code/web_files .
 
 cd /home/ec2-user/web_files
 
-# # Ensure correct ownership/permissions
+# Ensure correct ownership/permissions
 sudo chown -R ec2-user:ec2-user /home/ec2-user
 sudo chmod -R 755 /home/ec2-user/web_files
 
@@ -29,9 +29,7 @@ export NVM_DIR="$HOME/.nvm"
 
 # Sync latest code
 # rsync -av --delete ~/terraform-project-vpc-alb-modules-workspace/application_code/web_files/ ~/web_files/
-sleep 10
-cd ~/web_files
+cd /home/ec2-user/web_files
 npm install
-sleep 10
 npm run build
 EOF
