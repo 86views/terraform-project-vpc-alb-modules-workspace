@@ -15,8 +15,7 @@ chmod +x /home/ec2-user/web.sh
 
 echo "========== Preparing nginx.conf =========="
 # Replace placeholder BEFORE moving nginx.conf into /etc
-# Replace placeholder BEFORE moving nginx.conf into /etc
-sed -i "s|REPLACE-WITH-INTERNAL-LB-DNS|${internal_alb_dns}|g" \
+sed -i "s|REPLACE-WITH-INTERNAL-LB-DNS|__APP_ALB_DNS__|g" \
     /home/ec2-user/terraform-project-vpc-alb-modules-workspace/application_code/nginx.conf
 
 # Backup old config & apply new one
