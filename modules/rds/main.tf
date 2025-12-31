@@ -7,7 +7,7 @@ resource "aws_db_subnet_group" "db_subnet_group" {
     Name        = "db_subnet_group_${terraform.workspace}"
     Environment = "${terraform.workspace}"
     Project     = "vpc-alb"
-    Tier        = "backend"
+    Tier        = "Database"
   }
 }
 
@@ -48,5 +48,10 @@ resource "aws_db_instance" "db_instance" {
     Environment = "${terraform.workspace}"
     Project     = "vpc-alb"
     Tier        = "DB"
+  }
+
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes  = [tags]
   }
 }

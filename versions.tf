@@ -6,3 +6,7 @@ terraform {
     }
   }
 }
+
+terraform {
+  required_version = ">= 1.14.0, < 1.16.0"
+}

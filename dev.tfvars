@@ -8,9 +8,9 @@ db_subnet_private  = ["10.75.10.0/24", "10.75.11.0/24", "10.75.12.0/24"]
 web_instance_type = "t3.small"
 app_instance_type = "t3.small"
 
-db_instance_class       = "db.t3.micro"
+db_instance_class       = "db.t3.small"
 db_engine               = "mysql"
-db_engine_version       = "8.0.43"
+db_engine_version       = "8.0"
 db_parameter_group_name = "default.mysql8.0"
 storage_encrypted       = false
 db_allocated_storage    = 20
@@ -22,8 +22,8 @@ db_name                 = "webappdb"
 multi_az            = true
 publicly_accessible = false
 
-backup_retention_period = 5
-backup_window           = "17:00-21:00"
+backup_retention_period = 7
+backup_window           = "03:00-05:00"
 maintenance_window      = "sun:07:00-sun:09:00"
 
 skip_final_snapshot          = true
