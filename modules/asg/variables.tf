@@ -77,3 +77,19 @@ variable "min_size_app" {
 variable "max_size_app" {
   type = number
 }
+
+variable "web_sg_id" {
+  type = string
+}
+
+variable "app_sg_id" {
+  type = string
+}
+
+variable "key_name" {
+  type = string
+}
+
+variable "certificate_arn" {
+  type = string
+}

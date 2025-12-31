@@ -32,3 +32,13 @@ data "aws_ami" "backend" {
   }
 }
 
+
+data "aws_acm_certificate" "selected" {
+  statuses    = ["ISSUED"]
+  most_recent = true
+
+  tags = {
+    Domain = "harishshetty"
+    Name   = "harishshetty"
+  }
+}

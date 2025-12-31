@@ -9,3 +9,4 @@ output "app_alb_dns_name" {
 output "web_alb_dns_name" {
   value = module.asg.web_alb_dns_name
 }
+

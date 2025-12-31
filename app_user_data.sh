@@ -28,7 +28,7 @@ chmod +x /home/ec2-user/app.sh
 
 
 echo "========== Running web.sh =========="
-/home/ec2-user/app.sh
+sudo /home/ec2-user/app.sh
 
 cd /home/ec2-user/app_files
 

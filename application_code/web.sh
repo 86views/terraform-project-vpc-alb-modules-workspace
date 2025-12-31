@@ -9,7 +9,7 @@ cd /home/ec2-user
 sudo chown -R ec2-user:ec2-user /home/ec2-user
 sudo chmod -R 755 /home/ec2-user
 
-sudo rm -rf 3-tier-aws-terraform-packer-statelock-project
+sudo rm -rf terraform-project-vpc-alb-modules-workspace
 git clone https://github.com/harishnshetty/terraform-project-vpc-alb-modules-workspace.git
 
 cp -rf terraform-project-vpc-alb-modules-workspace/application_code/web_files .

@@ -73,6 +73,12 @@ module "asg" {
   frontend_alb_sg_id = module.sg.frontend_alb_sg_id
   backend_alb_sg_id  = module.sg.app_alb_internal_sg_id
 
+  web_sg_id = module.sg.web_sg_id
+  app_sg_id = module.sg.app_sg_id
+
+  key_name        = var.bastion_key_name
+  certificate_arn = data.aws_acm_certificate.selected.arn
+
   desired_capacity_web = var.desired_capacity_web
   min_size_web         = var.min_size_web
   max_size_web         = var.max_size_web

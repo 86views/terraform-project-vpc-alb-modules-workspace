@@ -46,12 +46,39 @@ resource "aws_lb_target_group" "web" {
 }
 
 
+resource "aws_lb_listener" "web" {
+  load_balancer_arn = aws_lb.web_alb.id
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.web.id
+  }
+
+}
+
+resource "aws_lb_listener" "web_https" {
+  load_balancer_arn = aws_lb.web_alb.id
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = var.certificate_arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.web.id
+  }
+}
 # web launch template
 resource "aws_launch_template" "web" {
   name_prefix = "${terraform.workspace}_web"
 
   image_id      = var.web_image_id
   instance_type = var.web_instance_type
+
+  vpc_security_group_ids = [var.web_sg_id]
+  key_name               = var.key_name
 
   user_data = base64encode(replace(base64decode(var.web_user_data_base64), "__APP_ALB_DNS__", aws_lb.app_alb.dns_name))
 
@@ -83,6 +110,13 @@ resource "aws_autoscaling_group" "web" {
   launch_template {
     id      = aws_launch_template.web.id
     version = "$Latest"
+  }
+
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 50
+    }
   }
 
   target_group_arns = [aws_lb_target_group.web.id]
@@ -120,7 +154,7 @@ resource "aws_lb" "app_alb" {
 
 resource "aws_lb_target_group" "app" {
   name     = "app"
-  port     = 80
+  port     = 4000
   protocol = "HTTP"
   vpc_id   = var.vpc_id
 
@@ -129,7 +163,7 @@ resource "aws_lb_target_group" "app" {
     healthy_threshold   = 2
     interval            = 30
     matcher             = "200"
-    path                = "/"
+    path                = "/health"
     port                = "traffic-port"
     protocol            = "HTTP"
     timeout             = 5
@@ -212,6 +246,9 @@ resource "aws_launch_template" "app" {
   image_id      = var.app_image_id
   instance_type = var.app_instance_type
 
+  vpc_security_group_ids = [var.app_sg_id]
+  key_name               = var.key_name
+
   user_data = var.app_user_data_base64
 
   iam_instance_profile {
@@ -246,6 +283,13 @@ resource "aws_autoscaling_group" "app" {
   launch_template {
     id      = aws_launch_template.app.id
     version = "$Latest"
+  }
+
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 50
+    }
   }
 
   target_group_arns = [aws_lb_target_group.app.id]
