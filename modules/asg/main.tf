@@ -102,6 +102,7 @@ resource "aws_autoscaling_group" "web" {
   name_prefix = "${terraform.workspace}_web"
 
   vpc_zone_identifier = var.web_private_subnets
+  default_cooldown    = 60
 
   desired_capacity = var.desired_capacity_web
   min_size         = var.min_size_web
@@ -275,6 +276,7 @@ resource "aws_autoscaling_group" "app" {
   name_prefix = "${terraform.workspace}_app"
 
   vpc_zone_identifier = var.app_private_subnets
+  default_cooldown    = 60
 
   desired_capacity = var.desired_capacity_app
   min_size         = var.min_size_app
