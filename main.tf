@@ -88,11 +88,13 @@ module "asg" {
   max_size_app         = var.max_size_app
 
   # Using dynamic AMI from data source
-  web_image_id         = data.aws_ami.frontend.id
-  app_image_id         = data.aws_ami.backend.id
-  web_instance_type    = var.web_instance_type
-  app_instance_type    = var.app_instance_type
-  web_user_data_base64 = base64encode(file("web_user_data.sh"))
+  web_image_id      = data.aws_ami.frontend.id
+  app_image_id      = data.aws_ami.backend.id
+  web_instance_type = var.web_instance_type
+  app_instance_type = var.app_instance_type
+  web_user_data_base64 = base64encode(templatefile("web_user_data.sh", {
+    internal_alb_dns = module.asg.app_alb_dns_name
+  }))
   app_user_data_base64 = base64encode(templatefile("app_user_data.sh", {
     region       = var.region
     secret_name  = module.secrets.secret_name
