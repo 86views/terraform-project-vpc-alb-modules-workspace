@@ -1,4 +1,4 @@
-region             = "ap-south-1"
+region             = "us-east-1"
 vpc_cidr_block     = "192.168.0.0/16"
 alb_subnet_public  = ["192.168.1.0/24", "192.168.2.0/24", "192.168.3.0/24"]
 web_subnet_private = ["192.168.4.0/24", "192.168.5.0/24", "192.168.6.0/24"]
@@ -43,7 +43,7 @@ desired_capacity_app = 2
 min_size_app         = 2
 max_size_app         = 2
 
-sns_topic_arn = "arn:aws:sns:ap-south-1:970378220457:stale-ebs"
+sns_topic_arn = "arn:aws:sns:us-east-1:970378220457:three-tier-staging"
 
 
 hosted_zone_name = "harishshetty.xyz"
@@ -51,10 +51,10 @@ record_name      = "staging"
 
 
 
-bastion_image_id      = "ami-0c44f651ab5e9285f"
+bastion_image_id      = "ami-08d7aabbb50c2c24e"
 bastion_instance_type = "t2.micro"
 bastion_tags          = { Name = "bastion-staging" }
-bastion_key_name      = "new-keypair"
+bastion_key_name      = "us-keypair"
 
 tags = {
   Project     = "vpc-alb"

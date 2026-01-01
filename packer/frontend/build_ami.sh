@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-AWS_REGION="ap-south-1"
+AWS_REGION="${AWS_REGION:-ap-south-1}"
 AMI_FILE="../ami_ids/frontend_ami.txt"
 mkdir -p ../ami_ids
 

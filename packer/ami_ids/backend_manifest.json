@@ -17,7 +17,16 @@
       "artifact_id": "ap-south-1:ami-0046ca047ffe1a4ba",
       "packer_run_uuid": "4125207f-0b2f-5bd1-150f-7bec8aa59d13",
       "custom_data": null
+    },
+    {
+      "name": "backend",
+      "builder_type": "amazon-ebs",
+      "build_time": 1767267736,
+      "files": null,
+      "artifact_id": "us-east-1:ami-040e2af46182875bc",
+      "packer_run_uuid": "3ebb8d59-ece5-ac89-1659-4d952bcc13cb",
+      "custom_data": null
     }
   ],
-  "last_run_uuid": "4125207f-0b2f-5bd1-150f-7bec8aa59d13"
+  "last_run_uuid": "3ebb8d59-ece5-ac89-1659-4d952bcc13cb"
 }
