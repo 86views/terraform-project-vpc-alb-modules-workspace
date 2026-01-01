@@ -1,7 +1,10 @@
 #!/bin/bash
 set -e
 
-AWS_REGION="${AWS_REGION:-ap-south-1}"
+if [ -z "$AWS_REGION" ]; then
+  echo "Error: AWS_REGION is not set. Please export AWS_REGION."
+  exit 1
+fi
 AMI_FILE="../ami_ids/backend_ami.txt"
 mkdir -p ../ami_ids
 LOG_FILE="packer_build.log"
