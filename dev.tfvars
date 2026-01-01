@@ -43,18 +43,18 @@ desired_capacity_app = 1
 min_size_app         = 1
 max_size_app         = 2
 
-sns_topic_arn = "arn:aws:sns:ap-south-1:970378220457:stale-ebs"
+sns_topic_arn = "arn:aws:sns:ap-south-1:970378220457:stale-ebs" # create your own sns topic
 
 
-hosted_zone_name = "harishshetty.xyz"
+hosted_zone_name = "harishshetty.xyz" # create your own hosted zone
 record_name      = "dev"
 
 
 
-bastion_image_id      = "ami-0c44f651ab5e9285f"
+bastion_image_id      = "ami-0c44f651ab5e9285f" # change this to your own ami id
 bastion_instance_type = "t2.micro"
 bastion_tags          = { Name = "bastion-dev" }
-bastion_key_name      = "new-keypair"
+bastion_key_name      = "new-keypair" # create your own key pair
 
 tags = {
   Project     = "vpc-alb"

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-AWS_REGION="ap-south-1"
+export AWS_REGION="ap-south-1"
 FRONTEND_AMI_NAME="three-tier-frontend"
 BACKEND_AMI_NAME="three-tier-backend"
 

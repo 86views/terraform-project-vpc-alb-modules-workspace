@@ -43,7 +43,7 @@ desired_capacity_app = 2
 min_size_app         = 2
 max_size_app         = 2
 
-sns_topic_arn = "arn:aws:sns:us-east-1:970378220457:three-tier-staging"
+sns_topic_arn = "arn:aws:sns:us-east-1:970378220457:alb"
 
 
 hosted_zone_name = "harishshetty.xyz"
