@@ -50,7 +50,7 @@
 | 3   | Nat gateway       | 3-tier-1a                       |                   |             |                                               |
 |     |                   | 3-tier-1b                       |                   |             |                                               |
 |     |                   | 3-tier-1c                       |                   |             |                                               |
-| 10  | Route-Table       | 3-tier-Public-rt                |                   |             |                                               |
+| 10  | Route-Table       | 3-tier-Public-rt                |                   | nat-gw      |                                               |
 |     |                   | 3-tier-web-Private-rt-1a        | 10.75.4.0/24      |       |                                               |
 |     |                   | 3-tier-web-Private-rt-1b        | 10.75.5.0/24      |       |                                               |
 |     |                   | 3-tier-web-Private-rt-1c        | 10.75.6.0/24      |       |                                               |
@@ -176,8 +176,9 @@ terraform destroy -var-file="prod.tfvars" -auto-approve
 * **Packer**
 * **Terraform Workspaces**
 * **Terraform Modules**
-* **Lifecycle Policies**: `prevent_destroy`, `ignore_changes`, `create_before_destroy`
-* **Meta-Arguments**: `depends_on`
+* **Lifecycle Policies**: `prevent_destroy`, `ignore_changes`, `create_before_destroy`, `replace_triggered_by, [not using here]`
+* **Meta-Arguments**: `depends_on`, `count`, 
+* **Provisioners**: `local-exec [not using here]`, `remote-exec [not using here]` , `file`
 * **Terraform Functions, Data Sources, and Filters**
 * **Version Locking**: Terraform and Provider version constraints
 * **Variables**
