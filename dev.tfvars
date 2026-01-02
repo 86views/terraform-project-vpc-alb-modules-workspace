@@ -39,11 +39,11 @@ desired_capacity_web = 1
 min_size_web         = 1
 max_size_web         = 2
 
-desired_capacity_app = 1
-min_size_app         = 1
-max_size_app         = 2
+desired_capacity_app = 2
+min_size_app         = 2
+max_size_app         = 4
 
-sns_topic_arn = "arn:aws:sns:ap-south-1:970378220457:stale-ebs" # create your own sns topic
+sns_topic_arn = "arn:aws:sns:ap-south-1:970378220457:alb-sns-demo" # create your own sns topic
 
 
 hosted_zone_name = "harishshetty.xyz" # create your own hosted zone

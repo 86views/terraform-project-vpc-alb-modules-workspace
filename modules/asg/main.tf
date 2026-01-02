@@ -83,8 +83,6 @@ resource "aws_launch_template" "web" {
   user_data = base64encode(replace(base64decode(var.web_user_data_base64), "__APP_ALB_DNS__", aws_lb.app_alb.dns_name))
 
 
-
-
   tag_specifications {
     resource_type = "instance"
     tags = {
@@ -103,6 +101,7 @@ resource "aws_autoscaling_group" "web" {
 
   vpc_zone_identifier = var.web_private_subnets
   default_cooldown    = 60
+
 
   desired_capacity = var.desired_capacity_web
   min_size         = var.min_size_web

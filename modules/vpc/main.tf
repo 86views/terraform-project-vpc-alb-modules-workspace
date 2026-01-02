@@ -4,7 +4,8 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "vpc-alb-${terraform.workspace}"
+    Name        = "vpc-alb-${terraform.workspace}"
+    environment = "${terraform.workspace}"
   }
 }
 
@@ -98,8 +99,6 @@ resource "aws_route_table" "alb_rt_public" {
 resource "aws_route_table" "web_rt_private" {
   vpc_id = aws_vpc.main.id
 
-
-
   tags = {
     Name = "web_rt_private-${terraform.workspace}"
   }
@@ -108,8 +107,6 @@ resource "aws_route_table" "web_rt_private" {
 resource "aws_route_table" "app_rt_private" {
   vpc_id = aws_vpc.main.id
 
-
-
   tags = {
     Name = "app_rt_private-${terraform.workspace}"
   }
@@ -117,8 +114,6 @@ resource "aws_route_table" "app_rt_private" {
 
 resource "aws_route_table" "db_rt_private" {
   vpc_id = aws_vpc.main.id
-
-
 
   tags = {
     Name = "db_rt_private-${terraform.workspace}"

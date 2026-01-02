@@ -51,7 +51,8 @@ resource "aws_db_instance" "db_instance" {
   }
 
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
     ignore_changes  = [tags]
+
   }
 }

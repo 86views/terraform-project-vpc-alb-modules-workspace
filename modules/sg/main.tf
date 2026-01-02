@@ -49,7 +49,7 @@ resource "aws_security_group" "frontend_alb_sg" {
   }
 
   tags = {
-    Name = "alb_sg-${terraform.workspace}"
+    Name = "frontend_alb_sg-${terraform.workspace}"
   }
 }
 
