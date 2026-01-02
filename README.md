@@ -3,9 +3,9 @@
 ## For more projects, check out  
 [https://harishnshetty.github.io/projects.html](https://harishnshetty.github.io/projects.html)
 
-[![Video Tutorial](https://github.com/harishnshetty/image-data-project/blob/9abf8f00d35d9f50dc95893102fcf3f374319383/3tieraws-project-statelock-terraform-packer.jpg)](https://youtu.be/M6BxKpSvWa4)
+[![Video Tutorial](https://github.com/harishnshetty/image-data-project/blob/704b15b49135944042900e2635e5ff14d7f3101f/3tieraws-project-statelock-terraform-packer-alb-module-workspace.jpg)](https://youtu.be/M6BxKpSvWa4)
 
-[![Channel Link](https://github.com/harishnshetty/image-data-project/blob/9abf8f00d35d9f50dc95893102fcf3f374319383/3tieraws-project-statelock-terraform-packer%20-structure.jpg)](https://youtu.be/M6BxKpSvWa4)
+[![Channel Link](https://github.com/harishnshetty/image-data-project/blob/704b15b49135944042900e2635e5ff14d7f3101f/3tieraws-project-statelock-terraform-packer-alb-module-workspace-diagram.jpg)](https://youtu.be/M6BxKpSvWa4)
 
 
 ---
