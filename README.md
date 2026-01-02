@@ -1,9 +1,4 @@
-# terraform-project-vpc-alb-modules-workspace
-
-
-
-
-# 3-Tier AWS Terraform Project + Packer with StateID Lock in S3 Bucket
+# 3-Tier AWS Terraform Project + Packer with VPC and ALB (Modules / Workspace) .tfstate File in S3 Bucket
 
 ## For more projects, check out  
 [https://harishnshetty.github.io/projects.html](https://harishnshetty.github.io/projects.html)
@@ -56,15 +51,15 @@
 |     |                   | 3-tier-1b                       |                   |             |                                               |
 |     |                   | 3-tier-1c                       |                   |             |                                               |
 | 10  | Route-Table       | 3-tier-Public-rt                |                   |             |                                               |
-|     |                   | 3-tier-web-Private-rt-1a        | 10.75.4.0/24      | nat-1a      |                                               |
-|     |                   | 3-tier-web-Private-rt-1b        | 10.75.5.0/24      | nat-1b      |                                               |
-|     |                   | 3-tier-web-Private-rt-1c        | 10.75.6.0/24      | nat-1c      |                                               |
-|     |                   | 3-tier-app-Private-rt-1a        | 10.75.7.0/24      | nat-1a      |                                               |
-|     |                   | 3-tier-app-Private-rt-1b        | 10.75.8.0/24      | nat-1b      |                                               |
-|     |                   | 3-tier-app-Private-rt-1c        | 10.75.9.0/24      | nat-1c      |                                               |
-|     |                   | 3-tier-db-Private-rt-1a         | 10.75.10.0/24     | nat-1a      |                                               |
-|     |                   | 3-tier-db-Private-rt-1b         | 10.75.11.0/24     | nat-1b      |                                               |
-|     |                   | 3-tier-db-Private-rt-1c         | 10.75.12.0/24     | nat-1c      |                                               |
+|     |                   | 3-tier-web-Private-rt-1a        | 10.75.4.0/24      |       |                                               |
+|     |                   | 3-tier-web-Private-rt-1b        | 10.75.5.0/24      |       |                                               |
+|     |                   | 3-tier-web-Private-rt-1c        | 10.75.6.0/24      |       |                                               |
+|     |                   | 3-tier-app-Private-rt-1a        | 10.75.7.0/24      |       |                                               |
+|     |                   | 3-tier-app-Private-rt-1b        | 10.75.8.0/24      |       |                                               |
+|     |                   | 3-tier-app-Private-rt-1c        | 10.75.9.0/24      |       |                                               |
+|     |                   | 3-tier-db-Private-rt-1a         | 10.75.10.0/24     |       |                                               |
+|     |                   | 3-tier-db-Private-rt-1b         | 10.75.11.0/24     |       |                                               |
+|     |                   | 3-tier-db-Private-rt-1c         | 10.75.12.0/24     |       |                                               |
  
 
 ---
