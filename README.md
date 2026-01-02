@@ -3,9 +3,9 @@
 ## For more projects, check out  
 [https://harishnshetty.github.io/projects.html](https://harishnshetty.github.io/projects.html)
 
-[![Video Tutorial](https://github.com/harishnshetty/image-data-project/blob/18092a3f383409bf598a67558f62f3a2ac80e9f9/3tieraws-project-statelock-terraform-packer-alb-module-workspace.jpg)](https://youtu.be/M6BxKpSvWa4)
+[![Video Tutorial](https://github.com/harishnshetty/image-data-project/blob/18092a3f383409bf598a67558f62f3a2ac80e9f9/3tieraws-project-statelock-terraform-packer-alb-module-workspace.jpg)](https://youtu.be/BgyYqUXuHuk?si=Gi6vkxhnVJQBILkG)
 
-[![Channel Link](https://github.com/harishnshetty/image-data-project/blob/18092a3f383409bf598a67558f62f3a2ac80e9f9/3tieraws-project-statelock-terraform-packer-alb-module-workspace-diagram.jpg)](https://youtu.be/M6BxKpSvWa4)
+[![Channel Link](https://github.com/harishnshetty/image-data-project/blob/18092a3f383409bf598a67558f62f3a2ac80e9f9/3tieraws-project-statelock-terraform-packer-alb-module-workspace-diagram.jpg)](https://youtu.be/BgyYqUXuHuk?si=Gi6vkxhnVJQBILkG)
 
 
 ---
@@ -203,3 +203,104 @@ To verify auto-scaling, we will use the `stress` tool:
 sudo yum install -y stress
 stress --cpu $(nproc) --timeout 300
 ```
+
+## Useful Commands (Project Specific Reference)
+
+ncdu
+### Workspace Management
+```bash
+terraform init
+terraform workspace list
+
+# Create workspaces
+terraform workspace new dev
+terraform workspace new staging
+terraform workspace new prod
+
+# Select workspace
+terraform workspace select dev
+terraform workspace show
+```
+
+### Auto Scaling Configuration
+
+### AMI Lookup (AWS CLI)
+**Get latest AL2023 Image ID (Text Output):**
+```bash
+aws ec2 describe-images \
+  --owners amazon \
+  --filters "Name=name,Values=al2023-ami-2023.*-x86_64" \
+            "Name=state,Values=available" \
+  --query 'Images | sort_by(@, &CreationDate)[-1].ImageId' \
+  --output text
+```
+
+**Get latest AL2023 Image Details (Table Output):**
+```bash
+aws ec2 describe-images \
+  --owners amazon \
+  --filters "Name=name,Values=al2023-ami-2023.*-x86_64" \
+  --query 'Images | sort_by(@, &CreationDate)[-1].[ImageId,Name,CreationDate]' \
+  --output table
+```
+
+### Setup Scripts
+```bash
+chmod +x setup.sh
+```
+
+### ACM Certificate Data Source Configuration
+```hcl
+data "aws_acm_certificate" "selected" {
+  statuses    = ["ISSUED"]
+  most_recent = true
+
+  tags = {
+    Domain = "harishshetty"
+    Name   = "harishshetty"
+  }
+}
+```
+
+### Deployment Commands
+**Plan & Apply (Dev):**
+```bash
+tf plan -var-file="dev.tfvars"
+terraform apply -var-file="dev.tfvars" -auto-approve
+```
+
+### Server Access & Database Connection
+**SSH into EC2 (Dev):**
+```bash
+ssh -i "new-keypair.pem" ec2-user@ec2-3-6-88-181.ap-south-1.compute.amazonaws.com
+```
+
+**Copy Keypair to EC2 (Dev):**
+```bash
+scp -i "new-keypair.pem" new-keypair.pem ec2-user@ec2-3-6-88-181.ap-south-1.compute.amazonaws.com:/home/ec2-user
+```
+
+**Connect to RDS from EC2 (Dev):**
+```bash
+mysql -h db-instance-dev.cne0wymoyx30.ap-south-1.rds.amazonaws.com -u admin -p
+```
+
+**SSH & SCP (US Region / Staging):**
+```bash
+ssh -i "us-new-keypair.pem" ec2-user@ec2-100-24-35-30.compute-1.amazonaws.com
+scp -i "us-new-keypair.pem" us-new-keypair.pem ec2-user@ec2-100-24-35-30.compute-1.amazonaws.com:/home/ec2-user
+```
+
+**Connect to Staging RDS:**
+```bash
+mysql -h db-instance-staging.ce3iwawsm9az.us-east-1.rds.amazonaws.com:3306 -u admin -p
+```
+
+### Stress Testing
+```bash
+sudo yum install -y stress htop
+stress --cpu $(nproc) --timeout 300
+```
+
+
+
