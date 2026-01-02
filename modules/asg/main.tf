@@ -82,6 +82,10 @@ resource "aws_launch_template" "web" {
 
   user_data = base64encode(replace(base64decode(var.web_user_data_base64), "__APP_ALB_DNS__", aws_lb.app_alb.dns_name))
 
+  monitoring {
+    enabled = true
+  }
+
 
   tag_specifications {
     resource_type = "instance"
@@ -250,6 +254,10 @@ resource "aws_launch_template" "app" {
   key_name               = var.key_name
 
   user_data = var.app_user_data_base64
+
+  monitoring {
+    enabled = true
+  }
 
   iam_instance_profile {
     name = aws_iam_instance_profile.app_profile.name
