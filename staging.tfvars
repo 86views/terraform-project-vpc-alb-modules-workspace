@@ -37,13 +37,13 @@ secret_db_name  = "webappdb"
 
 desired_capacity_web = 2
 min_size_web         = 2
-max_size_web         = 2
+max_size_web         = 4
 
 desired_capacity_app = 2
 min_size_app         = 2
-max_size_app         = 2
+max_size_app         = 4
 
-sns_topic_arn = "arn:aws:sns:us-east-1:970378220457:alb"
+sns_topic_arn = "arn:aws:sns:us-east-1:970378220457:alb-demo-us-east-1"
 
 
 hosted_zone_name = "harishshetty.xyz"
@@ -54,7 +54,7 @@ record_name      = "staging"
 bastion_image_id      = "ami-08d7aabbb50c2c24e"
 bastion_instance_type = "t2.micro"
 bastion_tags          = { Name = "bastion-staging" }
-bastion_key_name      = "us-keypair"
+bastion_key_name      = "us-new-keypair"
 
 tags = {
   Project     = "vpc-alb"
