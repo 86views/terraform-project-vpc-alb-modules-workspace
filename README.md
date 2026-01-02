@@ -159,7 +159,7 @@ aws secretsmanager delete-secret --secret-id backend-db-credentials-dev --force-
 
 aws secretsmanager delete-secret --secret-id backend-db-credentials-stage --force-delete-without-recovery --region us-east-1
 ```
-# "Important: Delete the snapshots along with the EBS volume, otherwise I may be charged."
+# "Important: Delete the  AMI and snapshots along with the EBS volume, otherwise I may be charged."
 
 ```bash
 terraform destroy -var-file="dev.tfvars" -auto-approve
