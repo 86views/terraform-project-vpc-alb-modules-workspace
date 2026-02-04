@@ -123,7 +123,7 @@ module "bastion" {
   instance_type   = var.bastion_instance_type
   subnet_id       = module.vpc.alb_subnet_public[0]
   security_groups = [module.sg.bastion_sg_id]
-  key_name        = var.bastion_key_name
+  key_pair_name        = var.bastion_key_name
 
   depends_on = [module.sg]
 

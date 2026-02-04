@@ -8,12 +8,7 @@ data "aws_ami" "frontend" {
 
   filter {
     name   = "name"
-    values = ["three-tier-frontend"]
-  }
-
-  filter {
-    name   = "state"
-    values = ["available"]
+    values = ["three-tier-frontend-ubuntu"]
   }
 }
 
@@ -23,22 +18,16 @@ data "aws_ami" "backend" {
 
   filter {
     name   = "name"
-    values = ["three-tier-backend"]
-  }
-
-  filter {
-    name   = "state"
-    values = ["available"]
+    values = ["three-tier-backend-ubuntu"]
   }
 }
-
 
 data "aws_acm_certificate" "selected" {
   statuses    = ["ISSUED"]
   most_recent = true
 
   tags = {
-    Domain = "harishshetty"
-    Name   = "harishshetty"
+    Domain = "oluleye"
+    Name   = "oluleye"
   }
 }

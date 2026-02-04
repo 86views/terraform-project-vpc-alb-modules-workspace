@@ -1,29 +1,46 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
-echo '📦 Updating system and installing required packages...'
-sudo dnf update -y
-sudo dnf install -y git
+echo "📦 Updating package index and installing base packages..."
+sudo apt update -y
+sudo apt install -y \
+  git \
+  curl \
+  ca-certificates \
+  gnupg \
+  lsb-release
 
-sudo wget https://dev.mysql.com/get/mysql80-community-release-el9-1.noarch.rpm
-sudo dnf install mysql80-community-release-el9-1.noarch.rpm -y
-sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2023
-sudo dnf install -y mysql-community-client
+# -----------------------------
+# MySQL Client (Ubuntu official)
+# -----------------------------
+echo "📦 Installing MySQL client..."
+sudo apt install -y mysql-client
 
-echo '📦 Installing NVM (Node Version Manager)'
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+# -----------------------------
+# NVM + Node.js 22
+# -----------------------------
+echo "📦 Installing NVM (Node Version Manager)..."
+curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 
-echo '📦 Installing Node.js v22 via NVM'
+echo "📦 Installing Node.js v22 via NVM..."
 nvm install 22
+nvm use 22
+nvm alias default 22
+
+echo "📦 Installing PM2..."
 npm install -g pm2
 
-echo '📦 Verifying installations'
+# -----------------------------
+# Verify installations
+# -----------------------------
+echo "📦 Verifying installations..."
 node -v
 npm -v
 pm2 -v
 mysql --version
 
-echo '✅ Backend AMI preparation complete!'
+echo "✅ Ubuntu Backend AMI preparation complete!"
