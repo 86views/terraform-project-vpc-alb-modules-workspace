@@ -25,14 +25,3 @@ The infrastructure follows a classic 3-tier pattern:
    - NAT Gateway for outbound internet access from private subnets  
    - Internet Gateway for public access
 
-### Diagram (Mermaid)
-
-```mermaid
-graph TD
-    A[Internet] --> IGW[Internet Gateway]
-    IGW --> VPC[VPC]
-    subgraph VPC
-        ALB[Application Load Balancer<br>(Public Subnets)] --> ASG[Auto Scaling Group<br>(Private Subnets<br>Custom AMI via Packer)]
-        ASG --> RDS[RDS Database<br>(Private Subnets)]
-    end
-    ALB -->|HTTPS/HTTP| Users[Users]

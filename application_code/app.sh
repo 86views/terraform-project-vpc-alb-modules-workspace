@@ -1,34 +1,40 @@
 #!/bin/bash
-set -e   # exit on error
+set -euo pipefail
 
+WEB_USER="ubuntu"
+HOME_DIR="/home/$WEB_USER"
+APP_DIR="$HOME_DIR/app_files"
 
-# Ensure correct ownership/permissions
-sudo chown -R ec2-user:ec2-user /home/ec2-user
-sudo chmod -R 755 /home/ec2-user/app_files
+echo "========== Ensuring correct ownership and permissions =========="
+sudo chown -R $WEB_USER:$WEB_USER "$APP_DIR"
+sudo chmod -R 755 "$APP_DIR"
 
-# Run as ec2-user so nvm/npm/pm2 are available
-su - ec2-user <<'EOF'
-# Load nvm environment
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+echo "========== Running app as $WEB_USER =========="
+sudo -u $WEB_USER bash <<EOF
+set -euo pipefail
 
-# Explicitly load app environment variables
+# Load NVM environment
+export NVM_DIR="\$HOME/.nvm"
+[ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh"
+
+# Load environment variables
 if [ -f /etc/profile.d/app_env.sh ]; then
     source /etc/profile.d/app_env.sh
 fi
 
-cd /home/ec2-user/app_files
+cd "$APP_DIR"
 
-# Install dependencies
-npm install @aws-sdk/client-secrets-manager mysql2
-npm install aws-sdk
+echo "📦 Installing Node.js dependencies..."
+npm install @aws-sdk/client-secrets-manager mysql2 aws-sdk
 npm install
-npm audit fix || true   # don’t fail if audit fix has nothing to fix
+npm audit fix || true
 
-# Start app with PM2
+echo "🚀 Starting app with PM2..."
 pm2 start index.js
 
-# Configure PM2 startup (systemd for ec2-user)
-pm2 startup systemd -u ec2-user --hp /home/ec2-user
+echo "🔧 Configuring PM2 systemd startup for $WEB_USER..."
+pm2 startup systemd -u $USER --hp $HOME
 pm2 save
 EOF
+
+echo "✅ App started and PM2 configured for reboot."

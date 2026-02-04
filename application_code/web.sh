@@ -1,35 +1,36 @@
 #!/bin/bash
-set -e   # exit on error
+set -euo pipefail
 
-# Download app-tier code
+WEB_USER="ubuntu"
+HOME_DIR="/home/$WEB_USER"
+APP_REPO="$HOME_DIR/terraform-project-vpc-alb-modules-workspace"
+WEB_DIR="$HOME_DIR/web_files"
 
+echo "========== Setting permissions =========="
+sudo chown -R $WEB_USER:$WEB_USER "$HOME_DIR"
+sudo chmod -R 755 "$HOME_DIR"
 
-cd /home/ec2-user
+echo "========== Copying web_files =========="
+cp -rf "$APP_REPO/application_code/web_files" "$WEB_DIR"
 
-sudo chown -R ec2-user:ec2-user /home/ec2-user
-sudo chmod -R 755 /home/ec2-user
+sudo chown -R $WEB_USER:$WEB_USER "$WEB_DIR"
+sudo chmod -R 755 "$WEB_DIR"
 
-# Note: Repo is cloned by web_user_data.sh to /home/ec2-user/terraform-project-vpc-alb-modules-workspace
+echo "========== Running build as $WEB_USER =========="
+sudo -u $WEB_USER bash <<EOF
+set -euo pipefail
 
-# Copy web_files from the cloned repo to current dir
-cp -rf /home/ec2-user/terraform-project-vpc-alb-modules-workspace/application_code/web_files .
+# Load NVM environment
+export NVM_DIR="\$HOME/.nvm"
+[ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh"
 
-cd /home/ec2-user/web_files
+cd "$WEB_DIR"
 
-# Ensure correct ownership/permissions
-sudo chown -R ec2-user:ec2-user /home/ec2-user
-sudo chmod -R 755 /home/ec2-user/web_files
-
-
-
-# Run build as ec2-user
-su - ec2-user <<'EOF'
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-
-# Sync latest code
-# rsync -av --delete ~/terraform-project-vpc-alb-modules-workspace/application_code/web_files/ ~/web_files/
-cd /home/ec2-user/web_files
+echo "📦 Installing dependencies..."
 npm install
+
+echo "🚀 Building frontend app..."
 npm run build
 EOF
+
+echo "✅ Frontend build complete."

@@ -14,7 +14,7 @@ HOME_DIR="/home/$WEB_USER"
 
 echo "========== Cloning application repository =========="
 cd "$HOME_DIR"
-git clone https://github.com/harishnshetty/terraform-project-vpc-alb-modules-workspace.git || true
+git clone https://github.com/86views/terraform-project-vpc-alb-modules-workspace.git || true
 
 echo "========== Copying web.sh =========="
 cp -f "$HOME_DIR/terraform-project-vpc-alb-modules-workspace/application_code/web.sh" "$HOME_DIR/web.sh"

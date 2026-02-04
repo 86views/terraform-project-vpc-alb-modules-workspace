@@ -8,7 +8,7 @@ dnf install -y nodejs npm
 
 echo "========== Cloning application repository =========="
 cd /home/ec2-user
-git clone https://github.com/harishnshetty/terraform-project-vpc-alb-modules-workspace.git || true
+git https://github.com/86views/terraform-project-vpc-alb-modules-workspace.git || true
 
 APP_DIR=/home/ec2-user/terraform-project-vpc-alb-modules-workspace/application_code
 
